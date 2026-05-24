@@ -62,11 +62,11 @@ class HmsPatient(models.Model):
                 raise ValidationError('CR Ratio is mandatory when PCR is checked!')
             
     
-    @api.onchange('state')
-    def _onchange_state(self):
-        if self._origin.id and self.state:
-            state_label = dict(self._fields['state'].selection).get(self.state)
+    def write(self, vals):
+        if 'state' in vals:
+            state_label = dict(self._fields['state'].selection).get(vals['state'])
             self.env['hms.log'].create({
-                'patient_id': self._origin.id,
+                'patient_id': self.id,
                 'description': f'State changed to {state_label}',
             })
+        return super().write(vals)
