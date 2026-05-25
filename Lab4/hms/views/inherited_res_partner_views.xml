@@ -1,0 +1,32 @@
+<odoo>
+    <record id="view_res_partner_form_inherited" model="ir.ui.view">
+        <field name="name">res.partner.form.inherited</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sale_purchase']//group[@name='misc']" position="inside">
+                <field name="related_patient_id"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_res_partner_list_inherited" model="ir.ui.view">
+        <field name="name">res.partner.list.inherited</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="website"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_res_partner_form_vat" model="ir.ui.view">
+        <field name="name">res.partner.form.vat</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

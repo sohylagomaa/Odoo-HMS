@@ -1,0 +1,1 @@
+from . import hms_department, hms_doctors,hms_log, hms_patient, inherited_res_partner

@@ -1,0 +1,112 @@
+<odoo>
+    <!-- Report Action -->
+    <record id="action_report_hms_patient" model="ir.actions.report">
+        <field name="name">Patient Status Report</field>
+        <field name="model">hms.patient</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hms.report_patient_status</field>
+        <field name="report_file">hms.report_patient_status</field>
+        <field name="binding_model_id" ref="model_hms_patient"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Report Template -->
+    <template id="report_patient_status">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Header -->
+                        <div class="row">
+                            <div class="col-6">
+                                <h2 style="color: #6c3483;">
+                                    Patient Status Report
+                                </h2>
+                            </div>
+                            <div class="col-6 text-end">
+                                <t t-if="doc.image">
+                                    <img t-att-src="image_data_uri(doc.image)"
+                                         style="max-height:120px; max-width:120px;
+                                                border-radius:8px;"/>
+                                </t>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <!-- Patient Info -->
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <p>
+                                    <strong>Name: </strong>
+                                    <t t-out="doc.first_name"/> <t t-out="doc.last_name"/>
+                                </p>
+                                <p>
+                                    <strong>Age: </strong>
+                                    <t t-out="doc.age"/>
+                                </p>
+                                <p>
+                                    <strong>Department: </strong>
+                                    <t t-out="doc.department_id.name or 'N/A'"/>
+                                </p>
+                                <p>
+                                    <strong>Doctors: </strong>
+                                    <t t-out="', '.join(doc.doctor_ids.mapped(lambda d: d.first_name + ' ' + d.last_name)) or 'N/A'"/>
+                                </p>
+                            </div>
+                            <div class="col-6">
+                                <p>
+                                    <strong>Birth Date: </strong>
+                                    <t t-out="doc.birth_date"/>
+                                </p>
+                                <p>
+                                    <strong>PCR: </strong>
+                                    <t t-out="doc.cr_ratio"/>
+                                </p>
+                                <p>
+                                    <strong>Blood Type: </strong>
+                                    <t t-out="doc.blood_type or 'N/A'"/>
+                                </p>
+                                <p>
+                                    <strong>Email: </strong>
+                                    <t t-out="doc.email or 'N/A'"/>
+                                </p>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <!-- Log History Table -->
+                        <h4 class="text-center" style="color: #6c3483;">
+                            Log History
+                        </h4>
+                        <table class="table table-bordered">
+                            <thead style="background-color: #d7bde2;">
+                                <tr>
+                                    <th>User</th>
+                                    <th>Date</th>
+                                    <th>Info</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.log_ids" t-as="log">
+                                    <tr>
+                                        <td>
+                                            <t t-out="log.created_by.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-out="log.date"/>
+                                        </td>
+                                        <td>
+                                            <t t-out="log.description"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
